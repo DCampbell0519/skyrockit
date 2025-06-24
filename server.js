@@ -1,3 +1,4 @@
+const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
@@ -23,6 +24,9 @@ mongoose.connection.on('connected', () => {
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
+
+app.use(express.static(path.join(__dirname, "public")))
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -30,6 +34,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 
 app.use(passUserToView);
 
