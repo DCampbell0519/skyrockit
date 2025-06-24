@@ -48,8 +48,6 @@ Delete	'/users/:userId/applications/:applicationId'	DELETE
 */
 
 
-
-
 app.get('/', (req, res) => {
   if (req.session.user) {
     res.redirect(`/users/${req.session.user._id}/applications`)

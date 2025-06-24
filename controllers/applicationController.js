@@ -87,7 +87,32 @@ router.delete('/:applicationId', async (req, res) => {
     }
 })
 
+router.get('/:applicationId/edit', async (req, res) => {
+        const currentUser = await User.findById(req.session.user._id);
+        const application = currentUser.applications.id(req.params.applicationId)
+        res.render('applications/edit.ejs', {
+            application: application,
+    })
+})
 
+router.put('/:applicationId', async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.session.user._id)
+        const application = currentUser.applications.id(req.params.applicationId)
+
+        // update the application using mongoose set method
+        application.set(req.body)
+
+        await currentUser.save()
+
+        res.redirect(`/users/${currentUser._id}/applications/${application._id}`)
+
+
+    } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+})
 
 
 module.exports = router;
